@@ -1,11 +1,10 @@
 package com.karlos.cursomc.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 
 import com.karlos.cursomc.domain.Categoria;
 
-@Repository
+// @Repository já é herdado de JpaRepository
 public interface CategoriaRepository extends  JpaRepository<Categoria, Integer>{
 
 }
