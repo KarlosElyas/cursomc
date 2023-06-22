@@ -4,6 +4,8 @@ import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -33,7 +35,8 @@ public class CategoriaResource {
 	}
 	
 	@RequestMapping(method = RequestMethod.POST) // É Recebido o JSON pela url
-	public ResponseEntity<Void> insert(@RequestBody Categoria obj){ // vai converter JSON pra Objeto
+	public ResponseEntity<Void> insert(@Valid @RequestBody CategoriaDTO objDto){ // vai converter JSON pra Objeto
+		Categoria obj = service.fromDTO(objDto);
 		obj = service.insert(obj);
 		// FALTA EMBASAMENTO PRA ENTEDER ESTAS REQUISIÇÕES "REST"
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest() // pega a url e adiciona o id gerado
@@ -42,7 +45,8 @@ public class CategoriaResource {
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<Void> update(@RequestBody Categoria obj, @PathVariable Integer id){
+	public ResponseEntity<Void> update(@Valid @RequestBody CategoriaDTO objDto, @PathVariable Integer id){
+		Categoria obj = service.fromDTO(objDto);
 		obj.setId(id);
 		obj = service.update(obj);
 		return ResponseEntity.noContent().build(); //conteudo vazio (204)
