@@ -15,7 +15,7 @@ public class CategoriaService {
 	@Autowired
 	private CategoriaRepository repo; // OBJETO de acesso a dados
 	
-	public Categoria buscar(Integer id) {
+	public Categoria find(Integer id) {
 		Optional<Categoria> obj = repo.findById(id); 
 		return obj.orElseThrow(() -> new ObjectNotFoundException(
 				"Objeto não encontrado! Id: " + id + ", Tipo: " + Categoria.class.getName()));
@@ -24,5 +24,11 @@ public class CategoriaService {
 	public Categoria insert(Categoria obj) {
 		obj.setId(null); // IMPORTANTE pois é impossivel definir um id especifico
 		return repo.save(obj);
+	}
+
+	public Categoria update(Categoria obj) {
+		find(obj.getId()); // exceção lançada caso nao exista no banco
+		return repo.save(obj); 
+		// se o id recebido no getId() não for NULL vai dar UPDATE do contrario INSERT
 	}
 }
