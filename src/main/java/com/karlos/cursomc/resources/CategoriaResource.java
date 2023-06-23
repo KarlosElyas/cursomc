@@ -34,6 +34,7 @@ public class CategoriaResource {
 		return ResponseEntity.ok().body(obj);
 	}
 	
+	// o VALID vai validar todos as anottations da respectiva classe DTO
 	@RequestMapping(method = RequestMethod.POST) // É Recebido o JSON pela url
 	public ResponseEntity<Void> insert(@Valid @RequestBody CategoriaDTO objDto){ // vai converter JSON pra Objeto
 		Categoria obj = service.fromDTO(objDto);
@@ -47,7 +48,7 @@ public class CategoriaResource {
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<Void> update(@Valid @RequestBody CategoriaDTO objDto, @PathVariable Integer id){
 		Categoria obj = service.fromDTO(objDto);
-		obj.setId(id);
+		obj.setId(id); // (DEPRECIADO) deve garantir que o ID seja o mesmo informado na URL
 		obj = service.update(obj);
 		return ResponseEntity.noContent().build(); //conteudo vazio (204)
 	}
