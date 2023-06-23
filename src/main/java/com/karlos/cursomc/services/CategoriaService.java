@@ -33,9 +33,11 @@ public class CategoriaService {
 		return repo.save(obj);
 	}
 
+	// OPERAÇÕES UTILIZADAS: SELECT + UPDATE. (find(id) + repo.save(objAtualizado))
 	public Categoria update(Categoria obj) {
-		find(obj.getId()); // exceção lançada caso nao exista no banco
-		return repo.save(obj); 
+		Categoria newObj = find(obj.getId());// exceção lançada caso nao exista no banco
+		updateData(newObj, obj);
+		return repo.save(newObj);
 		// se o id recebido no getId() não for NULL vai dar UPDATE do contrario INSERT
 	}
 
@@ -59,6 +61,10 @@ public class CategoriaService {
 	
 	public Categoria fromDTO(CategoriaDTO objDto) {
 		return new Categoria(objDto.getId(), objDto.getNome());
+	}
+	
+	private void updateData(Categoria newObj, Categoria obj) {
+		newObj.setNome(obj.getNome());
 	}
 	
 }

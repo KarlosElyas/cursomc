@@ -59,6 +59,7 @@ public class CategoriaResource {
 		return ResponseEntity.noContent().build();
 	}
 	
+	// no caso do FindAll não precisa mostrar(pendurar) os produtos pra cada categoria, por isso o uso do DTO
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<List<CategoriaDTO>> findAll(){
 		List<Categoria> list = service.findAll();
