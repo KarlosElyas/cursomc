@@ -35,14 +35,14 @@ public class ClienteResource {
 		return ResponseEntity.ok().body(obj);
 	}
 	
+	// UM CADASTRO MAIS COMPLEXO, pois cliente tem outras entidades como ENDEREÇO E TELEFONE
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<Void> insert(@Valid @RequestBody ClienteNewDTO objDto){
-		Cliente obj = service.fromDTO(objDto);
+		Cliente obj = service.fromDTO(objDto); // traz o cliente com lista de ENDEREÇO/TELEFONES
 		obj = service.insert(obj);
-		// FALTA EMBASAMENTO PRA ENTEDER ESTAS REQUISIÇÕES "REST"
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest() // pega a url e adiciona o id gerado
-				.path("/{id}").buildAndExpand(obj.getId()).toUri(); // porfim converte para URI
-		return ResponseEntity.created(uri).build(); // retorna a resposta de sucesso
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
+				.path("/{id}").buildAndExpand(obj.getId()).toUri();
+		return ResponseEntity.created(uri).build();
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)

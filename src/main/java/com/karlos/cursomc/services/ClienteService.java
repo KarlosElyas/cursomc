@@ -41,6 +41,7 @@ public class ClienteService {
 	@Transactional
 	public Cliente insert(Cliente obj) {
 		obj.setId(null);
+		//a tabela telefone é criada em cliente e ja salva junto com ele
 		obj = repo.save(obj);
 		enderecoRepository.saveAll(obj.getEnderecos()); // salva os endereços na mesma TRANSAÇÃO
 		return obj;
@@ -57,7 +58,7 @@ public class ClienteService {
 		try {
 			repo.deleteById(id);
 		} catch (DataIntegrityViolationException e) {
-			throw new DataIntegrityException("Não é possivel excluir pois está referenciado em outras tabelas");
+			throw new DataIntegrityException("Não é possivel excluir pois há pedidos relacionados");
 		}
 	}
 
@@ -78,6 +79,7 @@ public class ClienteService {
 	//SobreCarga 	--	CRIANDO UM CLIENTE com seus respectivos endereço/telefones
 	public Cliente fromDTO(ClienteNewDTO objDto) {
 		Cliente cli = new Cliente(null, objDto.getNome(), objDto.getEmail(), objDto.getCpfOuCnpj(), TipoCliente.toEnum(objDto.getTipo()));
+		// o springboot cria uma referencia do id da CIDADE no endereço
 		Cidade cid = new Cidade(objDto.getCidadeId(), null, null);
 		Endereco end = new Endereco(null, objDto.getLogradouro(), objDto.getNumero(), objDto.getComplemento(), objDto.getBairro(), objDto.getCep(), cli, cid);
 		cli.getEnderecos().add(end);
