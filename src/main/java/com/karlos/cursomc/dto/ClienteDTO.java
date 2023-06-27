@@ -9,6 +9,7 @@ import org.hibernate.validator.constraints.Length;
 
 import com.karlos.cursomc.domain.Cliente;
 
+// cliente usado para ATUALIZAÇÃO UPDATE
 public class ClienteDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 

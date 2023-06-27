@@ -33,10 +33,10 @@ public class Cliente implements Serializable {
 	
 	//@JsonManagedReference
 	@OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL) // tudo que ocorre em cliente afeta os demais
-	private List<Endereco> enderecos = new ArrayList<>();
+	private List<Endereco> enderecos = new ArrayList<>();									// Endereços
 	
 	@ElementCollection
-	@CollectionTable(name = "TELEFONE")
+	@CollectionTable(name = "TELEFONE") // Telefone não precisa do CASCADE pois ja é criado no cliente
 	private Set<String> telefones = new HashSet<>();
 	
 	@JsonIgnore
