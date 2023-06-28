@@ -7,8 +7,9 @@ import com.karlos.cursomc.domain.Cliente;
 
 public interface ClienteRepository extends  JpaRepository<Cliente, Integer>{
 
+	// jpa.query-methods (Padrão de nomes)
 	//O Spring Data cria automaticamente o find by com o campo informado | AULA 46
-	@Transactional(readOnly = true) // otimiza o método
+	@Transactional(readOnly = true) //transactional otimiza o método
 	Cliente findByEmail(String email);
 	
 }
