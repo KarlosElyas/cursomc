@@ -22,10 +22,10 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Autowired
-    private Environment env;
+    private Environment env; // pra garantir que o banco H2 possa ser acessado
 	
 	private static final String[] PUBLIC_MATCHERS = {"/h2-console/**"};
-	private static final String[] PUBLIC_MATCHERS_GET = {"/produtos/**", "/categorias/**"};
+	private static final String[] PUBLIC_MATCHERS_GET = {"/produtos/**", "/categorias/**", "/clientes/**"};
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
