@@ -9,6 +9,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,6 +35,7 @@ public class CategoriaResource {
 		return ResponseEntity.ok().body(obj);
 	}
 	
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	// o VALID vai validar todos as anottations da respectiva classe DTO
 	@RequestMapping(method = RequestMethod.POST) // É Recebido o JSON pela url
 	public ResponseEntity<Void> insert(@Valid @RequestBody CategoriaDTO objDto){ // vai converter JSON pra Objeto
@@ -45,6 +47,7 @@ public class CategoriaResource {
 		return ResponseEntity.created(uri).build(); // retorna a resposta de sucesso
 	}
 
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<Void> update(@Valid @RequestBody CategoriaDTO objDto, @PathVariable Integer id){
 		Categoria obj = service.fromDTO(objDto);
@@ -53,6 +56,7 @@ public class CategoriaResource {
 		return ResponseEntity.noContent().build(); //conteudo vazio (204)
 	}
 	
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> delete(@PathVariable Integer id) {
 		service.delete(id);

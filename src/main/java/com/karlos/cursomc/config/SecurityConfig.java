@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -25,6 +26,7 @@ import com.karlos.cursomc.security.JWTUtil;
 @SuppressWarnings("deprecation")
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Autowired
@@ -37,7 +39,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	private JWTUtil jwtUtil;
 	
 	private static final String[] PUBLIC_MATCHERS = {"/h2-console/**"};
-	private static final String[] PUBLIC_MATCHERS_GET = {"/produtos/**", "/categorias/**", "/clientes/**"};
+	private static final String[] PUBLIC_MATCHERS_GET = {"/produtos/**", "/categorias/**"};
+	private static final String[] PUBLIC_MATCHERS_POST = {"/clientes/**"}; // Cliente nao cadastrado pode cadastrar
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
@@ -46,7 +49,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         }
 		
 		http.cors().and().csrf().disable(); // CORS() aplica as configuração do BEAN CorsConfigurationSource
-		http.authorizeRequests().antMatchers(HttpMethod.GET, PUBLIC_MATCHERS_GET).permitAll()
+		
+		//POR PADRÃO O SPRING SECURITY RESTRINGE TODOS OS ENDPOINTS
+		http.authorizeRequests()
+			.antMatchers(HttpMethod.POST, PUBLIC_MATCHERS_POST).permitAll()
+			.antMatchers(HttpMethod.GET, PUBLIC_MATCHERS_GET).permitAll()
 			.antMatchers(PUBLIC_MATCHERS).permitAll().anyRequest().authenticated();
 		// ele autoriza as url do vetor
 		// REGISTRO DO FILTRO DE AUTENTICAÇÃO
