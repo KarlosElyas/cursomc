@@ -26,7 +26,7 @@ import com.karlos.cursomc.security.JWTUtil;
 @SuppressWarnings("deprecation")
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true) // permiti as restrições de ENDPOINTS para Administradores
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Autowired
@@ -51,6 +51,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http.cors().and().csrf().disable(); // CORS() aplica as configuração do BEAN CorsConfigurationSource
 		
 		//POR PADRÃO O SPRING SECURITY RESTRINGE TODOS OS ENDPOINTS
+		//(PORÉM SOMENTE PARA AQUELES USUARIOS QUE NAO ESTAO AUTENTICADO / LOGADO)
 		http.authorizeRequests()
 			.antMatchers(HttpMethod.POST, PUBLIC_MATCHERS_POST).permitAll()
 			.antMatchers(HttpMethod.GET, PUBLIC_MATCHERS_GET).permitAll()
@@ -58,7 +59,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		// ele autoriza as url do vetor
 		// REGISTRO DO FILTRO DE AUTENTICAÇÃO
 		http.addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtil));
-		// REGISTRO DO FILTRO DE AUTORIZAÇÃO
+		// REGISTRO DO FILTRO DE AUTORIZAÇÃO : Isso significa que os usuarios autorizados pelo LOGIN conseguem acessar
+		// end points que estejam por padrão PROTEGIDOS, utilizando TOKEN (no caso da aula 74, foi acessado /pedidos)
 		http.addFilter(new JWTAuthorizationFilter(authenticationManager(), jwtUtil, userDetailsService));
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		//Stateless assegura que o back end não vai criar seção de usuário.
