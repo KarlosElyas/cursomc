@@ -19,6 +19,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.karlos.cursomc.security.JWTAuthenticationFilter;
+import com.karlos.cursomc.security.JWTAuthorizationFilter;
 import com.karlos.cursomc.security.JWTUtil;
 
 @SuppressWarnings("deprecation")
@@ -48,7 +49,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http.authorizeRequests().antMatchers(HttpMethod.GET, PUBLIC_MATCHERS_GET).permitAll()
 			.antMatchers(PUBLIC_MATCHERS).permitAll().anyRequest().authenticated();
 		// ele autoriza as url do vetor
+		// REGISTRO DO FILTRO DE AUTENTICAÇÃO
 		http.addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtil));
+		// REGISTRO DO FILTRO DE AUTORIZAÇÃO
+		http.addFilter(new JWTAuthorizationFilter(authenticationManager(), jwtUtil, userDetailsService));
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		//Stateless assegura que o back end não vai criar seção de usuário.
 	}
