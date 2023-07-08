@@ -55,6 +55,8 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 		String username = ((UserSS) auth.getPrincipal()).getUsername();
         String token = jwtUtil.generateToken(username); // gera um token para o email(username) recebido
         res.addHeader("Authorization", "Bearer " + token);
+        res.addHeader("access-control-expose-headers", "Authorization"); // vai permitir que a aplicação acesse
+        																// o cabeçalho Authorization e pegar o token
 	}
 
 	private class JWTAuthenticationFailureHandler implements AuthenticationFailureHandler {
