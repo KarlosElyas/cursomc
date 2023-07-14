@@ -20,8 +20,8 @@ import com.karlos.cursomc.services.exceptions.FileException;
 public class ImageService {
 	
 	public BufferedImage getJpgImageFromFile(MultipartFile uploadedFile) {
-		
-		String ext = FilenameUtils.getExtension(uploadedFile.getOriginalFilename()); // pegar o tipo em string
+																		// pegar o tipo em string
+		String ext = FilenameUtils.getExtension(uploadedFile.getOriginalFilename()).toLowerCase(); 
 		if(!"png".equals(ext) && !"jpg".equals(ext)) {
 			throw new FileException("Somente imagens PNG e JPG são permitidas");
 		}
